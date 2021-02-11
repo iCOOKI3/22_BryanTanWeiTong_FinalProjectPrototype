@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         //Move Back with Animation
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.back * Time.deltaTime * moveSpeed);
+            transform.Translate(Vector3.forward * Time.deltaTime * -moveSpeed);
 
             playerAnim.SetBool("isRun", true);
 
