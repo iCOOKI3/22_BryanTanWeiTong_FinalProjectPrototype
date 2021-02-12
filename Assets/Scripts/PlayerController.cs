@@ -10,14 +10,20 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed; //Player Movement Speed Value
     public float rotateSpeed; //Player Rotate Speed Value
     public float jumpStrength; //Player Jump Strength Value
-    public GameObject bulletPrefab;
-    public GameObject bulletSpawn;
+    public GameObject bulletPrefab; //Set bulletPrefab GameObject
+    public GameObject bulletSpawn; //Set bulletSpawn GameObject
 
     public Animator playerAnim; //Set Animator of Player
     public Rigidbody playerRb; //Set Rigidbody of Player
 
-    public GameObject FirstPersonViewCam;
-    public GameObject ThirdPersonViewCam;
+    public GameObject FirstPersonViewCam; //Set FirstPersonViewCam GameObject
+    public GameObject ThirdPersonViewCam; //Set FirstPersonViewCam GameObject
+
+    public int Ammo = 15;
+
+    public GameObject AmmoText;
+
+    private bool isOutOfAmmo = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +35,8 @@ public class PlayerController : MonoBehaviour
         ThirdPersonViewCam.SetActive(true); //Set Game to start in Third Person
 
         FirstPersonViewCam.SetActive(false); //Set Game to not start in First Person
+
+        AmmoText.GetComponent<Text>().text = "Ammo : " + Ammo;
     }
 
     // Update is called once per frame
@@ -101,12 +109,25 @@ public class PlayerController : MonoBehaviour
         {
             playerAnim.SetTrigger("trigFlip");
         }
-        //Shoot 
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+        //Prevent shooting when 0 Ammo
+        if(isOutOfAmmo == false)
         {
-            playerAnim.SetTrigger("trigShooting");
+            //Shoot 
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                playerAnim.SetTrigger("trigShooting");
 
-            Instantiate(bulletPrefab, bulletSpawn.transform.position, transform.rotation);
+                Instantiate(bulletPrefab, bulletSpawn.transform.position, transform.rotation);
+
+                Ammo -= 1;
+
+                AmmoText.GetComponent<Text>().text = "Ammo : " + Ammo;
+
+                if (Ammo == 0)
+                {
+                    isOutOfAmmo = true;
+                }
+            }
         }
         else if(Input.GetKeyUp(KeyCode.UpArrow))
         {
@@ -116,9 +137,15 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.DownArrow))
         {
             playerAnim.SetTrigger("trigReloading");
+            isOutOfAmmo = false;
+        }
+        else if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            Ammo = 15;
+            AmmoText.GetComponent<Text>().text = "Ammo : " + Ammo;
         }
         //Rotate Left
-        if (Input.GetKey(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.LeftArrow))
         {
             transform.Rotate(new Vector3(0, Time.deltaTime * -rotateSpeed, 0));
         }
