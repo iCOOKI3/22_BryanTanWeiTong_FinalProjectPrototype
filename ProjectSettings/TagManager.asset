@@ -5,8 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
-  - Bullet
-  - Zombie
   layers:
   - Default
   - TransparentFX

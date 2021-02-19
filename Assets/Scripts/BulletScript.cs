@@ -18,12 +18,4 @@ public class BulletScript : MonoBehaviour
     {
         transform.position += transform.forward * Time.deltaTime * Speed;
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Zombie")
-        {
-            Destroy(gameObject);
-        }
-    }
 }
