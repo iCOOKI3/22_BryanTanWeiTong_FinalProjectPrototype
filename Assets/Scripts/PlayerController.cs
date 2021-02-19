@@ -23,7 +23,15 @@ public class PlayerController : MonoBehaviour
 
     public GameObject AmmoText;
 
+    public int MaxHealth = 5;
+
+    public int currentHealth;
+
+    public HealthBarScript healthBar;
+
     private bool isOutOfAmmo = false;
+
+    private int damage = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +45,10 @@ public class PlayerController : MonoBehaviour
         FirstPersonViewCam.SetActive(false); //Set Game to not start in First Person
 
         AmmoText.GetComponent<Text>().text = "Ammo : " + Ammo;
+
+        currentHealth = MaxHealth;
+
+        healthBar.SetMaxHealth(MaxHealth);
     }
 
     // Update is called once per frame
@@ -153,6 +165,16 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
             transform.Rotate(new Vector3(0, Time.deltaTime * rotateSpeed, 0));
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            currentHealth -= damage;
+
+            healthBar.SetHealth(currentHealth);
         }
     }
 }

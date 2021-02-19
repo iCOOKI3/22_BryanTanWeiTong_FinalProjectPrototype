@@ -38,6 +38,13 @@ public class ZombieScript : MonoBehaviour
 
             zombieAnim.SetBool("isRun",true);
         }
+
+        if (distance > ZombieDistanceRun)
+        {
+            zombieAnim.SetBool("isIdle",true);
+
+            zombieAnim.SetBool("isRun", false);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
