@@ -18,6 +18,8 @@ public class ZombieSpawnScript : MonoBehaviour
     void Start()
     {
         StartCoroutine(WaitAndSpawn(spawnInterval));
+
+        EnemyPrefab = GameObject.FindGameObjectWithTag("Enemy");
     }
 
     // Update is called once per frame

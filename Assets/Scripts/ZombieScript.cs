@@ -1,17 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombieScript : MonoBehaviour
 {
-
-    public Transform Player;
+    public NavMeshAgent Zombie;
+    public GameObject Player;
     public Animator zombieAnim;
     public Rigidbody zombieRb;
 
-    public float moveSpeed;
-    public float MaxDist;
-    public float MinDist;
+    public float ZombieDistanceRun;
 
     // Start is called before the first frame update
     void Start()
@@ -19,23 +18,25 @@ public class ZombieScript : MonoBehaviour
         zombieAnim = GetComponent<Animator>();
 
         zombieRb = GetComponent<Rigidbody>();
+
+        Zombie = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(Player);
+        float distance = Vector3.Distance(transform.position, Player.transform.position);
 
-        if (Vector3.Distance(transform.position, Player.position) >= MinDist)
+        //Run Towards Player
+        if(distance < ZombieDistanceRun)
         {
-            transform.position += transform.forward * moveSpeed * Time.deltaTime;
+            Vector3 dirToPlayer = transform.position - Player.transform.position;
 
-            zombieAnim.SetBool("isRun", true);
-        }
+            Vector3 newPos = transform.position - dirToPlayer;
 
-        if (Vector3.Distance(transform.position, Player.position) >= MaxDist)
-        {
+            Zombie.SetDestination(newPos);
 
+            zombieAnim.SetBool("isRun",true);
         }
     }
 
