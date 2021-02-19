@@ -10,6 +10,9 @@ public class ZombieScript : MonoBehaviour
     public Animator zombieAnim;
     public Rigidbody zombieRb;
 
+    public AudioSource audioSource;
+    public AudioClip[] AudioClipArr;
+
     public float ZombieDistanceRun;
 
     // Start is called before the first frame update
@@ -20,6 +23,8 @@ public class ZombieScript : MonoBehaviour
         zombieRb = GetComponent<Rigidbody>();
 
         Zombie = GetComponent<NavMeshAgent>();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -56,6 +61,8 @@ public class ZombieScript : MonoBehaviour
             zombieAnim.SetBool("isRun", false);
 
             Destroy(this);
+
+            audioSource.PlayOneShot(AudioClipArr[0], 1.0f);
         }
     }
 }

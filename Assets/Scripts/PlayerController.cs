@@ -19,19 +19,22 @@ public class PlayerController : MonoBehaviour
     public GameObject FirstPersonViewCam; //Set FirstPersonViewCam GameObject
     public GameObject ThirdPersonViewCam; //Set FirstPersonViewCam GameObject
 
-    public int Ammo = 15;
+    public AudioSource audioSource;
+    public AudioClip[] AudioClipArr;
 
-    public GameObject AmmoText;
+    public int Ammo = 15; //Set Ammo Value
 
-    public int MaxHealth = 5;
+    public GameObject AmmoText; //Set Ammo Text
 
-    public int currentHealth;
+    public int MaxHealth = 5; //Set MaxHeath Value
 
-    public HealthBarScript healthBar;
+    public int currentHealth; //Set currentHealth GameObject
 
-    private bool isOutOfAmmo = false;
+    public HealthBarScript healthBar; //Set Reference from other Script
 
-    private int damage = 1;
+    private bool isOutOfAmmo = false; //Set initial boolean value
+
+    private int damage = 1; //Set Damage Value
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +52,8 @@ public class PlayerController : MonoBehaviour
         currentHealth = MaxHealth;
 
         healthBar.SetMaxHealth(MaxHealth);
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -135,6 +140,8 @@ public class PlayerController : MonoBehaviour
 
                 AmmoText.GetComponent<Text>().text = "Ammo : " + Ammo;
 
+                audioSource.PlayOneShot(AudioClipArr[1], 0.5f);
+
                 if (Ammo == 0)
                 {
                     isOutOfAmmo = true;
@@ -148,6 +155,7 @@ public class PlayerController : MonoBehaviour
         //Reloading
         if(Input.GetKeyDown(KeyCode.DownArrow))
         {
+            audioSource.PlayOneShot(AudioClipArr[0], 0.5f);
             playerAnim.SetTrigger("trigReloading");
             isOutOfAmmo = false;
         }
