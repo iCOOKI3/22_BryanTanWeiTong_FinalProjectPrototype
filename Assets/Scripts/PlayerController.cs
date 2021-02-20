@@ -18,13 +18,22 @@ public class PlayerController : MonoBehaviour
 
     public GameObject FirstPersonViewCam; //Set FirstPersonViewCam GameObject
     public GameObject ThirdPersonViewCam; //Set FirstPersonViewCam GameObject
+    public GameObject DeathViewCam;
 
     public AudioSource audioSource;
     public AudioClip[] AudioClipArr;
 
     public int Ammo = 15; //Set Ammo Value
 
+    public int Health = 10;
+
+    public static int zKilled = 0;
+
     public GameObject AmmoText; //Set Ammo Text
+
+    public GameObject HealthBarText;
+
+    public GameObject zKilledText;
 
     public int MaxHealth = 5; //Set MaxHeath Value
 
@@ -33,8 +42,12 @@ public class PlayerController : MonoBehaviour
     public HealthBarScript healthBar; //Set Reference from other Script
 
     private bool isOutOfAmmo = false; //Set initial boolean value
-
+    
     private int damage = 1; //Set Damage Value
+
+    private bool playerDead = false;
+
+    private float gravity = 850f;
 
     // Start is called before the first frame update
     void Start()
@@ -47,18 +60,30 @@ public class PlayerController : MonoBehaviour
 
         FirstPersonViewCam.SetActive(false); //Set Game to not start in First Person
 
-        AmmoText.GetComponent<Text>().text = "Ammo : " + Ammo;
+        DeathViewCam.SetActive(false); //Set Game to not start in DeathView Cam
+
+        AmmoText.GetComponent<Text>().text = "Ammo: " + Ammo;
+
+        HealthBarText.GetComponent<Text>().text = "Health: " + Health;
+
+        zKilledText.GetComponent<Text>().text = "Zombies Killed: " + zKilled;
 
         currentHealth = MaxHealth;
 
         healthBar.SetMaxHealth(MaxHealth);
 
         audioSource = GetComponent<AudioSource>();
+
+        zKilled = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        zKilledText.GetComponent<Text>().text = "Zombies Killed: " + zKilled;
+
+        playerRb.AddForce(Vector3.down * Time.deltaTime * gravity);
+
         //Move Front with Animation
         if (Input.GetKey(KeyCode.W))
         {
@@ -114,17 +139,25 @@ public class PlayerController : MonoBehaviour
             FirstPersonViewCam.SetActive(false);
 
             ThirdPersonViewCam.SetActive(true);
+
+            DeathViewCam.SetActive(false);
         }
         else if(Input.GetKey(KeyCode.Period))
         {
             FirstPersonViewCam.SetActive(true);
 
             ThirdPersonViewCam.SetActive(false);
+
+            DeathViewCam.SetActive(false);
         }
         //Frontflip
         if(Input.GetKeyDown(KeyCode.Space))
         {
             playerAnim.SetTrigger("trigFlip");
+        }
+        else if(Input.GetKeyUp(KeyCode.Space))
+        {
+            playerAnim.SetBool("isIdle", true);
         }
         //Prevent shooting when 0 Ammo
         if(isOutOfAmmo == false)
@@ -138,7 +171,7 @@ public class PlayerController : MonoBehaviour
 
                 Ammo -= 1;
 
-                AmmoText.GetComponent<Text>().text = "Ammo : " + Ammo;
+                AmmoText.GetComponent<Text>().text = "Ammo: " + Ammo;
 
                 audioSource.PlayOneShot(AudioClipArr[1], 0.5f);
 
@@ -162,7 +195,8 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.DownArrow))
         {
             Ammo = 15;
-            AmmoText.GetComponent<Text>().text = "Ammo : " + Ammo;
+            AmmoText.GetComponent<Text>().text = "Ammo: " + Ammo;
+            playerAnim.SetBool("isIdle", true);
         }
         //Rotate Left
             if (Input.GetKey(KeyCode.LeftArrow))
@@ -174,15 +208,56 @@ public class PlayerController : MonoBehaviour
         {
             transform.Rotate(new Vector3(0, Time.deltaTime * rotateSpeed, 0));
         }
+        if(playerDead == true)
+        {
+            HealthBarText.GetComponent<Text>().text = "Health: 0";
+        }
+
+        if(zKilled == 5)
+        {
+            SceneManager.LoadScene("WinScene");
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if(playerDead == false)
         {
-            currentHealth -= damage;
+            if (collision.gameObject.tag == "Enemy")
+            {
+                currentHealth -= damage;
 
-            healthBar.SetHealth(currentHealth);
-        }
+                healthBar.SetHealth(currentHealth);
+
+                Health -= 1;
+
+                HealthBarText.GetComponent<Text>().text = "Health: " + Health;
+
+                if (currentHealth == 0)
+                {
+                    StartCoroutine(PlayDeathAnim());
+
+                    FirstPersonViewCam.SetActive(false);
+
+                    ThirdPersonViewCam.SetActive(false);
+
+                    DeathViewCam.SetActive(true);
+
+                    playerDead = true;
+                }
+            }
+        }   
+    }
+
+    private IEnumerator PlayDeathAnim()
+    {
+        playerAnim.SetTrigger("trigDeath");
+
+        playerAnim.SetTrigger("trigExit");
+
+        yield return new WaitForSeconds(5);
+
+        SceneManager.LoadScene("LoseScene");
+
     }
 }
