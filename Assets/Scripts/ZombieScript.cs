@@ -14,6 +14,9 @@ public class ZombieScript : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip[] AudioClipArr;
 
+    public Transform CoinPrefab;
+    public Vector3 spawnPoint;
+
     public float ZombieDistanceRun;
 
     private bool zDeath = false;
@@ -28,6 +31,8 @@ public class ZombieScript : MonoBehaviour
         Zombie = GetComponent<NavMeshAgent>();
 
         audioSource = GetComponent<AudioSource>();
+
+        spawnPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -56,7 +61,7 @@ public class ZombieScript : MonoBehaviour
 
         if(zDeath == true)
         {
-            PlayerController.zKilled += 1;
+            PlayerController.zKilled ++;
 
             zDeath = false;
         }
@@ -72,9 +77,11 @@ public class ZombieScript : MonoBehaviour
 
             zombieAnim.SetBool("isRun", false);
 
-            Destroy(gameObject,1.0f);
+            Destroy(gameObject, 0.6f);
 
             audioSource.PlayOneShot(AudioClipArr[0], 1.0f);
+
+            Instantiate(CoinPrefab, spawnPoint, Quaternion.identity);
         }
     }
 }
