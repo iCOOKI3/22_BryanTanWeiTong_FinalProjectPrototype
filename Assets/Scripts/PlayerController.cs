@@ -33,17 +33,25 @@ public class PlayerController : MonoBehaviour
 
     public GameObject HealthBarText;
 
-    public GameObject zKilledText;
+    public  GameObject zKilledText;
 
     public GameObject CoinText;
 
-    public float CoinCollected = 0;
+    public GameObject TimerBarText;
+
+    public static float CoinCollected = 0;
 
     public int MaxHealth = 5; //Set MaxHeath Value
 
     public int currentHealth; //Set currentHealth GameObject
 
     public HealthBarScript healthBar; //Set Reference from other Script
+
+    public float MaxTime = 15;
+
+    public TimerBarScript timerbar;
+
+    private bool startTimer = true;
 
     private bool isOutOfAmmo = false; //Set initial boolean value
     
@@ -55,6 +63,10 @@ public class PlayerController : MonoBehaviour
 
     public Light Flashlight;
     private bool FlashLightOn = false;
+
+    public ParticleSystem MuzzleFlash;
+
+    [SerializeField] Text countdownText;
 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +89,8 @@ public class PlayerController : MonoBehaviour
 
         CoinText.GetComponent<Text>().text = "Coin Collected: " + CoinCollected;
 
+        TimerBarText.GetComponent<Text>().text = "Time Left: " + MaxTime;
+
         currentHealth = MaxHealth;
 
         healthBar.SetMaxHealth(MaxHealth);
@@ -93,8 +107,15 @@ public class PlayerController : MonoBehaviour
 
         playerRb.AddForce(Vector3.down * Time.deltaTime * gravity);
 
-        if (playerDead == false)
+        CoinText.GetComponent<Text>().text = "Coin Collected: " + CoinCollected;
+
+        if (playerDead == false && startTimer == true)
         {
+
+            timerbar.SetTimer((int)MaxTime);
+            MaxTime -= 1 * Time.deltaTime;
+            TimerBarText.GetComponent<Text>().text = "Time Left: " + Mathf.Round(MaxTime);
+
             //Move Front with Animation
             if (Input.GetKey(KeyCode.W))
             {
@@ -186,6 +207,8 @@ public class PlayerController : MonoBehaviour
 
                     audioSource.PlayOneShot(AudioClipArr[1], 0.5f);
 
+                    MuzzleFlash.Play();
+
                     if (Input.GetKeyDown(KeyCode.UpArrow) && Ammo == 0)
                     {
                         isOutOfAmmo = true;
@@ -242,6 +265,22 @@ public class PlayerController : MonoBehaviour
             else
             {
                 FlashLightOn = !FlashLightOn;
+            }
+            if(MaxTime <= 0)
+            {
+                TimerBarText.GetComponent<Text>().text = "Time Left: 0";
+
+                StartCoroutine(PlayDeathAnim());
+
+                FirstPersonViewCam.SetActive(false);
+
+                ThirdPersonViewCam.SetActive(false);
+
+                DeathViewCam.SetActive(true);
+
+                playerDead = true;
+
+                startTimer = false;
             }
         }
 
