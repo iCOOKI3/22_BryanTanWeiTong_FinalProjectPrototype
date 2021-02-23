@@ -189,11 +189,11 @@ public class PlayerController : MonoBehaviour
             //Use Health Kit
             if(Input.GetKeyDown(KeyCode.E) && purchaseHealth == true)
             {
-                currentHealth += healthPack;
-                healthBar.SetHealth(currentHealth);
-                Health = 10;
-                HealthBarText.GetComponent<Text>().text = "Health: " + Health;
+                Health = 100;
                 healthPack -= 1;
+                currentHealth = 100;
+                healthBar.SetHealth(currentHealth);
+                HealthBarText.GetComponent<Text>().text = "Health: " + Health;
                 playerAnim.SetTrigger("trigHeal");
                 audioSource.PlayOneShot(AudioClipArr[4], 3.5f);
             }
@@ -343,8 +343,11 @@ public class PlayerController : MonoBehaviour
 
                 HealthBarText.GetComponent<Text>().text = "Health: " + Health;
 
-                if (currentHealth == 0)
+                if (currentHealth <= 0)
                 {
+
+                    HealthBarText.GetComponent<Text>().text = "Health: 0";
+
                     StartCoroutine(PlayDeathAnim());
 
                     FirstPersonViewCam.SetActive(false);
