@@ -68,9 +68,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] Text countdownText;
 
+    public GameObject healthpackText;
+
+    public int healthPack = 0;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        playerDead = false;
+         
         playerAnim = GetComponent<Animator>(); //Get Animator Component
 
         playerRb = GetComponent<Rigidbody>(); //Get Rigidbody Component
@@ -90,6 +97,8 @@ public class PlayerController : MonoBehaviour
         CoinText.GetComponent<Text>().text = "Coin Collected: " + CoinCollected;
 
         TimerBarText.GetComponent<Text>().text = "Time Left: " + MaxTime;
+
+        healthpackText.GetComponent<Text>().text = "Health Kit: " + healthPack;
 
         currentHealth = MaxHealth;
 

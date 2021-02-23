@@ -12,9 +12,9 @@ public class PauseMenuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(GameIsPaused)
+            if (GameIsPaused)
             {
                 Resume();
             }
@@ -38,7 +38,7 @@ public class PauseMenuScript : MonoBehaviour
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
-        AudioListener.pause = true;
+        AudioListener.pause = false;
     }
 
     public void LoadMenu()
@@ -50,5 +50,15 @@ public class PauseMenuScript : MonoBehaviour
     {
         Application.Quit();
         Debug.Log("Quitting Game...");
+    }
+
+    public void Mute()
+    {
+        AudioListener.pause = true;
+    }
+
+    public void Audio()
+    {
+        AudioListener.pause = false;
     }
 }
