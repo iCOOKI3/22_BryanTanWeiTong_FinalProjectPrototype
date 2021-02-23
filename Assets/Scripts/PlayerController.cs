@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
     public int Ammo = 15; //Set Ammo Value
 
-    public int Health = 10;
+    public int Health = 100;
 
     public static int zKilled = 0;
 
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isOutOfAmmo = false; //Set initial boolean value
     
-    private int damage = 1; //Set Damage Value
+    private int damage = 10; //Set Damage Value
 
     private bool playerDead = false;
 
@@ -70,7 +70,11 @@ public class PlayerController : MonoBehaviour
 
     public GameObject healthpackText;
 
-    public int healthPack = 0;
+    public static int healthPack = 0;
+
+    public static bool purchasedAmmo = false;
+
+    public static bool purchaseHealth = false;
 
     // Start is called before the first frame update
     void Start()
@@ -107,6 +111,10 @@ public class PlayerController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         zKilled = 0;
+
+        CoinCollected = 0;
+
+        healthPack = 0;
     }
 
     // Update is called once per frame
@@ -117,6 +125,10 @@ public class PlayerController : MonoBehaviour
         playerRb.AddForce(Vector3.down * Time.deltaTime * gravity);
 
         CoinText.GetComponent<Text>().text = "Coin Collected: " + CoinCollected;
+
+        healthpackText.GetComponent<Text>().text = "Health Kit: " + healthPack;
+
+        healthBar.SetHealth(currentHealth);
 
         if (playerDead == false && startTimer == true)
         {
@@ -173,6 +185,22 @@ public class PlayerController : MonoBehaviour
             {
                 playerAnim.SetBool("isIdle", true);
                 playerAnim.SetBool("isRight", false);
+            }
+            //Use Health Kit
+            if(Input.GetKeyDown(KeyCode.E) && purchaseHealth == true)
+            {
+                currentHealth += healthPack;
+                healthBar.SetHealth(currentHealth);
+                Health = 10;
+                HealthBarText.GetComponent<Text>().text = "Health: " + Health;
+                healthPack -= 1;
+                playerAnim.SetTrigger("trigHeal");
+                audioSource.PlayOneShot(AudioClipArr[4], 3.5f);
+            }
+            else if(Input.GetKeyUp(KeyCode.E) && purchaseHealth == true)
+            {
+                playerAnim.SetBool("isIdle", true);
+                purchaseHealth = false;
             }
             //Change Camera
             if (Input.GetKey(KeyCode.Comma))
@@ -231,17 +259,18 @@ public class PlayerController : MonoBehaviour
                 playerAnim.SetBool("isIdle", true);
             }
             //Reloading
-            if (Input.GetKeyDown(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.DownArrow) && purchasedAmmo == true)
             {
                 audioSource.PlayOneShot(AudioClipArr[0], 0.5f);
                 playerAnim.SetTrigger("trigReloading");
                 isOutOfAmmo = false;
             }
-            else if (Input.GetKeyUp(KeyCode.DownArrow))
+            else if (Input.GetKeyUp(KeyCode.DownArrow) && purchasedAmmo == true)
             {
                 Ammo = 15;
                 AmmoText.GetComponent<Text>().text = "Ammo: " + Ammo;
                 playerAnim.SetBool("isIdle", true);
+                purchasedAmmo = false;
             }
             //Rotate Left
             if (Input.GetKey(KeyCode.LeftArrow))
@@ -310,7 +339,7 @@ public class PlayerController : MonoBehaviour
 
                 healthBar.SetHealth(currentHealth);
 
-                Health -= 1;
+                Health -= 10;
 
                 HealthBarText.GetComponent<Text>().text = "Health: " + Health;
 

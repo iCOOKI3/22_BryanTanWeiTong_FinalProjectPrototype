@@ -62,9 +62,9 @@ public class ShopMenuScript : MonoBehaviour
         if(PlayerController.CoinCollected >= 5)
         {
             PlayerController.CoinCollected -= 5;
-            Debug.Log("Purchasing Ammo...");
             audioSource.PlayOneShot(AudioClipArr[0], 1.25f);
             ShopCoinText.GetComponent<Text>().text = ": " + PlayerController.CoinCollected;
+            PlayerController.purchasedAmmo = true;
         }
         else
         {
@@ -79,9 +79,10 @@ public class ShopMenuScript : MonoBehaviour
         if(PlayerController.CoinCollected >= 5)
         {
             PlayerController.CoinCollected -= 5;
-            Debug.Log("Purchasing Health Pack...");
             audioSource.PlayOneShot(AudioClipArr[1], 1.25f);
             ShopCoinText.GetComponent<Text>().text = ": " + PlayerController.CoinCollected;
+            PlayerController.healthPack += 1;
+            PlayerController.purchaseHealth = true;
         }
         else
         {

@@ -2174,7 +2174,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   AudioClipArr:
   - {fileID: 8300000, guid: 1b3e3592414c58745ab914b84c810805, type: 3}
-  - {fileID: 8300000, guid: edef1d93793e33342b5295c7edcfe57d, type: 3}
+  - {fileID: 8300000, guid: 1b3e3592414c58745ab914b84c810805, type: 3}
   - {fileID: 8300000, guid: 18981eeadf027394c8b11f291d7167fa, type: 3}
 --- !u!82 &229533048
 AudioSource:
@@ -5824,8 +5824,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -240, y: 185}
-  m_SizeDelta: {x: 145, y: 30}
+  m_AnchoredPosition: {x: -235, y: 185}
+  m_SizeDelta: {x: 155, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &696051397
 MonoBehaviour:
@@ -7689,9 +7689,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 99
+  m_MaxValue: 120
   m_WholeNumbers: 1
-  m_Value: 99
+  m_Value: 120
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -18849,9 +18849,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 5
-  m_WholeNumbers: 1
-  m_Value: 5
+  m_MaxValue: 100
+  m_WholeNumbers: 0
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -24391,7 +24391,7 @@ PrefabInstance:
     - target: {fileID: 3928248669432091624, guid: 7c4b87589dbc9d94fbf4ef80c5aa90af,
         type: 3}
       propertyPath: spawnInterval
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3928248669432091625, guid: 7c4b87589dbc9d94fbf4ef80c5aa90af,
         type: 3}
@@ -24583,8 +24583,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1012598574, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
+      propertyPath: Health
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1012598574, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
       propertyPath: MaxTime
-      value: 99
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1012598574, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
       propertyPath: AmmoText
@@ -24600,7 +24604,7 @@ PrefabInstance:
       objectReference: {fileID: 873461541}
     - target: {fileID: 1012598574, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
       propertyPath: MaxHealth
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1012598574, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
       propertyPath: ZombieBar
@@ -24656,7 +24660,7 @@ PrefabInstance:
       objectReference: {fileID: 2126012494}
     - target: {fileID: 1012598574, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
       propertyPath: AudioClipArr.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1012598574, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
       propertyPath: AudioClipArr.Array.data[0]
@@ -24677,7 +24681,7 @@ PrefabInstance:
     - target: {fileID: 1012598574, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
       propertyPath: AudioClipArr.Array.data[4]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: edef1d93793e33342b5295c7edcfe57d, type: 3}
     - target: {fileID: 1012598577, guid: 88d5df5898f49194ea09e49aef9b02be, type: 3}
       propertyPath: m_UseGravity
       value: 1
