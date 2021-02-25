@@ -6,75 +6,56 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-
-    public float moveSpeed; //Player Movement Speed Value
-    public float rotateSpeed; //Player Rotate Speed Value
-    public float jumpStrength; //Player Jump Strength Value
     public GameObject bulletPrefab; //Set bulletPrefab GameObject
     public GameObject bulletSpawn; //Set bulletSpawn GameObject
+    public GameObject FirstPersonViewCam; //Set FirstPersonViewCam GameObject
+    public GameObject ThirdPersonViewCam; //Set ThirdPersonViewCam GameObject
+    public GameObject DeathViewCam; //Set DeathViewCam GameObject
+    public GameObject AmmoText; //Set Ammo Text
+    public GameObject HealthBarText; //Set HealthBar Text
+    public GameObject zKilledText; //Set zKilled text
+    public GameObject CoinText; //Set Coin Collected Text
+    public GameObject TimerBarText; //Set TimerBar Text
+    public GameObject healthpackText; //Set HealthPack Text
 
     public Animator playerAnim; //Set Animator of Player
     public Rigidbody playerRb; //Set Rigidbody of Player
 
-    public GameObject FirstPersonViewCam; //Set FirstPersonViewCam GameObject
-    public GameObject ThirdPersonViewCam; //Set FirstPersonViewCam GameObject
-    public GameObject DeathViewCam;
-
-    public AudioSource audioSource;
-    public AudioClip[] AudioClipArr;
-
-    public int Ammo = 15; //Set Ammo Value
-
-    public int Health = 100;
-
-    public static int zKilled = 0;
-
-    public GameObject AmmoText; //Set Ammo Text
-
-    public GameObject HealthBarText;
-
-    public  GameObject zKilledText;
-
-    public GameObject CoinText;
-
-    public GameObject TimerBarText;
-
-    public static float CoinCollected = 0;
-
-    public int MaxHealth = 5; //Set MaxHeath Value
-
-    public int currentHealth; //Set currentHealth GameObject
+    public AudioSource audioSource; //Set AudioSource
+    public AudioClip[] AudioClipArr; //Set AudioClip Array
 
     public HealthBarScript healthBar; //Set Reference from other Script
 
-    public float MaxTime = 15;
+    public TimerBarScript timerbar; //Set Reference from other Scripts
 
-    public TimerBarScript timerbar;
+    public Light Flashlight; //Set reference for Light component
 
-    private bool startTimer = true;
+    public ParticleSystem MuzzleFlash; //Set reference for ParticleSystem
 
-    private bool isOutOfAmmo = false; //Set initial boolean value
-    
+    [SerializeField] Text countdownText; //Set Countdown Timer to start counting and show text
+
+    public float moveSpeed; //Player Movement Speed Value
+    public float rotateSpeed; //Player Rotate Speed Value
+    public float jumpStrength; //Player Jump Strength Value
+    public float MaxTime = 150; //Timer
+    public static float CoinCollected = 0; //Amount of Coins the player current have
+    private float gravity = 850f; //Set Gravity
+
+    public int Ammo = 15; //Set Ammo Value
+    public int Health = 100; //Set Player Health
+    public int MaxHealth = 5; //Set MaxHeath Value
+    public int currentHealth; //Set currentHealth GameObject
+    public static int zKilled = 0; //Set reference to other scripts
+    public static int healthPack = 0; //Set reference to other scripts
     private int damage = 10; //Set Damage Value
 
-    private bool playerDead = false;
 
-    private float gravity = 850f;
-
-    public Light Flashlight;
-    private bool FlashLightOn = false;
-
-    public ParticleSystem MuzzleFlash;
-
-    [SerializeField] Text countdownText;
-
-    public GameObject healthpackText;
-
-    public static int healthPack = 0;
-
-    public static bool purchasedAmmo = false;
-
-    public static bool purchaseHealth = false;
+    public static bool purchasedAmmo = false; //Set reference to other scripts
+    public static bool purchaseHealth = false; //Set reference to other scripts
+    private bool startTimer = true; //Set initial boolean value
+    private bool isOutOfAmmo = false; //Set initial boolean value
+    private bool playerDead = false; //Set initial boolean value
+    private bool FlashLightOn = false; //Set initial boolean value
 
     // Start is called before the first frame update
     void Start()
